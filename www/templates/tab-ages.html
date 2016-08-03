@@ -1,0 +1,38 @@
+<ion-view view-title="People">
+
+
+   <!-- <ion-slide-box show-pager="true" options="options">
+      <ion-slide ng-repeat="item in data.slides">
+
+        <div class="person">
+          <h1>{{item.name}}</h1>
+          <p>{{item.birthDateTime}}
+        </div>
+
+      </ion-slide>
+    </ion-slide-box>-->
+
+    <ion-slide-box show-pager="true" options="options" on-slide-changed="slideHasChanged($index)">
+      <ion-slide ng-repeat="item in data.slides">
+        <div class="person">
+          <h1>{{item.name}}</h1>
+          <!--<ul>-->
+            <!--<li ng-repeat="(key,val) in dates">-->
+              <!--<span class="time-label">{{key}}</span>-->
+              <!--<span class="time-value">{{val}}</span>-->
+            <!--</li>-->
+          <!--</ul>-->
+          <div align="center">
+            <table class="time-table">
+              <tr ng-repeat="(key,val) in dates">
+                <td class="time-label">{{key}}</td>
+                <td class="time-value">{{val}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slide-box>
+
+
+</ion-view>
