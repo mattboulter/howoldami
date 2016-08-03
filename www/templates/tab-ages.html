@@ -1,5 +1,18 @@
 <ion-view view-title="People">
 
+  <style>
+    .dynamic-background {
+      background: url({{backgroundImage}}) no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <div id="bg" class="dynamic-background">
+  <!--ng-style="background-image: url({{backgroundImage}})"-->
 
    <!-- <ion-slide-box show-pager="true" options="options">
       <ion-slide ng-repeat="item in data.slides">
@@ -15,7 +28,7 @@
     <ion-slide-box show-pager="true" options="options" on-slide-changed="slideHasChanged($index)">
       <ion-slide ng-repeat="item in data.slides">
         <div class="person">
-          <h1>{{item.name}}</h1>
+          <div class="person-name">{{item.name}}</div>
           <!--<ul>-->
             <!--<li ng-repeat="(key,val) in dates">-->
               <!--<span class="time-label">{{key}}</span>-->
@@ -24,15 +37,30 @@
           <!--</ul>-->
           <div align="center">
             <table class="time-table">
+              <tr>
+                <td class="time-label">days till bday</td>
+                <td class="time-value">{{daysTillBday}}</td>
+              </tr>
+            </table>
+            <table class="time-table"><tr><td><hr/></td></tr></table>
+            <table class="time-table">
+              <tr ng-repeat="(key,val) in signs">
+                <td class="time-label">{{key}}</td>
+                <td class="time-value">{{val}}</td>
+              </tr>
+            </table>
+            <table class="time-table"><tr><td><hr/></td></tr></table>
+            <table class="time-table">
               <tr ng-repeat="(key,val) in dates">
                 <td class="time-label">{{key}}</td>
                 <td class="time-value">{{val}}</td>
               </tr>
             </table>
+
           </div>
         </div>
       </ion-slide>
     </ion-slide-box>
 
-
+  </div>
 </ion-view>

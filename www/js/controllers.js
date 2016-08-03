@@ -1,6 +1,8 @@
 angular.module('starter.controllers', [])
 
-  .controller("MainCtrl", function($scope, $ionicSlideBoxDelegate, PeopleService, $interval) {
+  .controller("MainCtrl", function($scope, $ionicSlideBoxDelegate, PeopleService, $interval,
+                                   BGImageService, $rootScope) {
+    $scope.backgroundImage = '../img/default-background.jpg';
 
     $scope.options = {
       loop: false,
@@ -47,44 +49,53 @@ angular.module('starter.controllers', [])
     $scope.slideHasChanged = function ($index) {
       console.log('slideHasChanges '+$index);
 
+      // APOD
+      /*BGImageService.getNature().then(function (url) {
+        // $scope.backgroundImage = url;
+        window.imgData = url.data;
+        $("#bg").css("background-image", "url('data:image/jpeg;base64," + url.data + "')");
+      });*/
+
+      // unsplash.it
+      var rand = getRandomIntInclusive(1, 1020);
+      window.currentImageUrl = "https://unsplash.it/500/800?image="+rand;
+      $("#bg").css("background-image", "url("+window.currentImageUrl+")");
+      BGImageService.getImageLightness(window.currentImageUrl, function (lightVal) {
+        console.debug('Image: '+window.currentImageUrl+' is '+lightVal);
+
+        if (lightVal > 100) {
+          // change white
+          $('.person').css('color','#fff').css('text-shadow','#000 1px 1px')
+        } else {
+          $('.person').css('color','#000').css('text-shadow','#fff 1px 1px')
+        }
+
+      });
+
+      // var url = BGImageService.getNature();
+      //$scope.backgroundImage = '';
+      // console.debug('url == '+url);
+
       $scope.person = PeopleService.get($index);
       $scope.dates = PeopleService.calc($scope.person.birthDateTime);
+      $scope.signs = PeopleService.signs($scope.person.birthDateTime);
+      $scope.daysTillBday = PeopleService.daysTillBday($scope.person.birthDateTime);
       console.log('GOT ', $scope.dates);
     };
     $scope.slideHasChanged(0);
 
 
-    $interval(function() {
+    var intervalId = $interval(function() {
       $scope.dates = PeopleService.calc($scope.person.birthDateTime);
     }, 1000);
 
+    console.log('IntervalId == ', intervalId);
 
 
-  })
-
-
-.controller('DashCtrl', function($scope) {})
-
-
-  .controller('AgesCtrl', function($scope, PeopleService, $ionicSlideBoxDelegate) {
-
-    //$scope.ages = AgesService.getPeople();
-    $scope.data = {};
-    $scope.data.slides = [
-      {
-        title : "Slide 1",
-        data  : "Slide 1 Content"
-      },
-      {
-        title : "Slide 2",
-        data  : "Slide 2 Content"
-      }
-    ];
-    $ionicSlideBoxDelegate.update();
 
   })
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('SettingsCtrl', function($scope,  PeopleService) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -93,18 +104,25 @@ angular.module('starter.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+  $scope.people = PeopleService.getPeople();
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+
+
+.controller('PersonDetailCtrl', function($scope, $stateParams, PeopleService) {
+  // $scope.person = PeopleService.get($stateParams.personId);
+  //
+  // console.debug('PersonID == '+$stateParams.personId);
+  // console.debug('person == ', $scope.person);
+
 })
 
+/*
 .controller('AccountCtrl', function($scope) {
   $scope.settings = {
     enableFriends: true
   };
-});
+})
+*/
+
+;
