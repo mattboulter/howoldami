@@ -29,7 +29,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
     // Load stored people
     PeopleService.loadPeople();
-
+    $('.tab-nav').hide();
 
   });
 
